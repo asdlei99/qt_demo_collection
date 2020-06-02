@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/font">
+        <file>resourse/font/fontawesome-webfont.ttf</file>
+        <file>resourse/font/mui.ttf</file>
+        <file>resourse/font/timefont.ttf</file>
+    </qresource>
+    <qresource prefix="/images">
+        <file>resourse/images/animation/1.PNG</file>
+        <file>resourse/images/animation/2.PNG</file>
+        <file>resourse/images/animation/3.PNG</file>
+        <file>resourse/images/list/forward.png</file>
+    </qresource>
+    <qresource prefix="/qss">
+        <file>resourse/qss/dialog/default.qss</file>
+    </qresource>
+</RCC>

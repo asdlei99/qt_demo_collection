@@ -1,0 +1,11 @@
+p2pchat-qt (0.5) unstable; urgency=medium
+
+  * add more default theme
+
+  * double click to comfirm the destination IP address
+
+  * show file size in proper unit in selecting file,sending file and receiving file
+
+  * show warnning when file sender is also file receiver
+
+ -- ypingcn <1344632698@qq.com>  Wed, 07 Oct 2017 12:02:00 +0800

@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resource/shader/fshader.glsl</file>
+        <file>resource/shader/vshader.glsl</file>
+        <file>resource/texture/wall.jpg</file>
+        <file>resource/texture/face.png</file>
+    </qresource>
+</RCC>

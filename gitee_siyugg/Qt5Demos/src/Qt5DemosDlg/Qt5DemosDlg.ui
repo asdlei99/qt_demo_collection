@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Qt5DemosDlg</class>
+ <widget class="QDialog" name="Qt5DemosDlg">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QTreeWidget" name="Qt5DemosWidget">
+     <attribute name="headerHighlightSections">
+      <bool>true</bool>
+     </attribute>
+     <column>
+      <property name="text">
+       <string>Qt5Demos</string>
+      </property>
+     </column>
+     <item>
+      <property name="text">
+       <string>Qt5基本对话框</string>
+      </property>
+      <property name="icon">
+       <iconset resource="icon.qrc">
+        <normaloff>:/icon/StdDlgs.png</normaloff>:/icon/StdDlgs.png</iconset>
+      </property>
+      <item>
+       <property name="text">
+        <string>Qt5标准对话框</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>进度条</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Qt位置函数对话框</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>调色板</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>电子钟</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>可扩展对话框</string>
+       </property>
+      </item>
+     </item>
+     <item>
+      <property name="text">
+       <string>Qt5主窗体</string>
+      </property>
+      <item>
+       <property name="text">
+        <string>图片浏览器</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>文字处理器</string>
+       </property>
+      </item>
+	  <item>
+		  <property name="text">
+			  <string>图形画板</string>
+		  </property>
+	  </item>
+	  <item>
+		  <property name="text">
+			  <string>绘画</string>
+		  </property>
+	  </item>
+      <item>
+       <property name="text">
+        <string>图元的旋转、缩放等变换</string>
+       </property>
+      </item>
+     </item>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="icon.qrc"/>
+ </resources>
+ <connections/>
+</ui>

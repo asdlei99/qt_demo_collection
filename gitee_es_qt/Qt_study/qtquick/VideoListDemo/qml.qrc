@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>VideoDialogQml.qml</file>
+        <file>videos.xml</file>
+        <file>VideoDialogCpp.qml</file>
+    </qresource>
+</RCC>

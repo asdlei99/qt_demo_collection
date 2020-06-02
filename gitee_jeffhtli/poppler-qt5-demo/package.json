@@ -1,0 +1,17 @@
+{
+  "name": "pdfmaster",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "echo \"npm linux or npm win32\" && exit 0",
+    "linux": "node ./tools/dependence.js linux",
+    "win32": "node ./tools/dependence.js win32"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "extract-zip": "^1.6.0",
+    "fs-extra": "^1.0.0"
+  }
+}

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Title</title>
+		<link rel="stylesheet" href="css/inclassrecord.css">
+	</head>
+	<body>
+		<div id="title">随堂记录</div>
+		<div id="content">
+			<ul id="ul_id">
+				<li>
+					<div class="li-content">
+						<div class="look">查看</div>
+						<div class="inclass-record-type">纸笔互动</div>
+						<div>10人参与，结束与10:：00 用时10分钟</div>
+						<div class="cut-off"></div>
+					</div>
+				</li>
+				<li>
+					<div class="li-content">
+						<div class="look">查看</div>
+						<div class="inclass-record-type">纸笔互动</div>
+						<div>10人参与，结束与10:：00 用时10分钟</div>
+						<div class="cut-off"></div>
+					</div>
+				</li>
+				<li>
+					<div class="li-content">
+						<div class="look">查看</div>
+						<div class="inclass-record-type">纸笔互动</div>
+						<div>10人参与，结束与10:：00 用时10分钟</div>
+						<div class="cut-off"></div>
+					</div>
+				</li>
+				<li>
+					<div class="li-content">
+						<div class="look">查看</div>
+						<div class="inclass-record-type">纸笔互动</div>
+						<div>10人参与，结束与10:：00 用时10分钟</div>
+						<div class="cut-off"></div>
+					</div>
+				</li>
+				<li>
+					<div class="li-content">
+						<div class="look">查看</div>
+						<div class="inclass-record-type">纸笔互动</div>
+						<div>10人参与，结束与10:：00 用时10分钟</div>
+						<div class="cut-off"></div>
+					</div>
+				</li>
+			</ul>
+		</div>
+
+		<button id="closeBtn">关闭</button>
+
+		<script src="jquery-3.2.1.min.js"></script>
+		<script>
+
+			$(document).ready(function () {
+			    // 关闭当前窗口
+				$("#closeBtn").click(function () {
+					window.close();
+                });
+
+                invokeCPlusPlus();
+            });
+
+			// 拉取本堂课中的随堂记录列表
+			/*$.ajax({
+				url: "192.168.1.142/api/selClassRecord",
+				data: {classingId: 1},
+				success: function (result) {
+					console.log(result);
+                },
+				error: function () {
+					console.log("get in-calass record error");
+                }
+			});*/
+
+			/*
+			* js方法均可由互动课堂app直接调用
+			* */
+			function addItem(arg1, arg2, arg3) {
+				var ulElement = document.getElementById("ul-id");
+				var liElement = document.createElement("li");
+				var divElement = document.createElement("div");
+				divElement.className = "li-content";
+				var lookDiveEle = document.createElement("div");
+				lookDiveEle.innerText = "查看";
+				lookDiveEle.className = "look";
+				divElement.appendChild(lookDiveEle);
+				var paperAndPenDivEle = document.createElement("div");
+				paperAndPenDivEle.className = "inclass-record-type";
+				paperAndPenDivEle.innerText = "纸笔互动";
+				divElement.appendChild(paperAndPenDivEle);
+				var showDivEle = document.createElement("div");
+				showDivEle.innerText = "10人参与，结束与10:：00 用时10分钟<";
+                divElement.appendChild(showDivEle);
+                var clDivElement = document.createElement("div");
+                clDivElement.className = "cut-off";
+                divElement.appendChild(clDivElement);
+                liElement.appendChild(divElement);
+                ulElement.appendChild(liElement);
+            }
+            
+            // 此示例演示js方法通知互动课堂事件或指调用C++方法
+			function  invokeCPlusPlus() {
+                console.log("start" );
+				window.cefQuery({
+					request: "example:" + "data",   // 代表请求方法 example事件名称 data 为传入参数
+					onSuccess: function (response) {
+						console.log("invoke success response = " + response);
+                    },
+					onFailure: function (ecode, emsg) {
+						console.log("invoke fail code = " + ecode + " msg:" + emsg);
+                    }
+				});
+            }
+		</script>
+	</body>
+</html>

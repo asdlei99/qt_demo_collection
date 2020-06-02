@@ -1,0 +1,50 @@
+The best way that I found to work with assembly in QT Creator, it was to configure the .pro file. I added the nasm compiler to .pro file and some flags. You can change these flags if you need it. But with this configuration works well for me
+
+example.pro
+
+QMAKE_EXTRA_COMPILERS += nasm
+NASMEXTRAFLAGS = -f elf64 -g -F dwarf
+OTHER_FILES += $$NASM_SOURCES
+nasm.output = ${QMAKE_FILE_BASE}.o
+nasm.commands = nasm $$NASMEXTRAFLAGS -o ${QMAKE_FILE_BASE}.o ${QMAKE_FILE_NAME}
+nasm.input = NASM_SOURCES
+
+Finishing, you have to assign to NASM_SOURCES variable all the ASM files, in my case it was just one and it called arregloAsm.asm
+
+NASM_SOURCES += arregloAsm.asm
+
+I hope that all this works for you too!
+
+In the menu Build click build all and the application should be abel to run. It's a empty terminal in this example but on my system it works. I was looking for a solution and thanks to this post, I finally have one. Just remember to add
+
+extern "C" void test();
+
+
+
+
+/usr/lib/x86_64-linux-gnu/qt4/bin/uic mainwindow.ui -o ui_mainwindow.h
+
+g++ -c -m64 -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++-64 -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I. -I. -I. -o main.o main.cpp
+
+g++ -c -m64 -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++-64 -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I. -I. -I. -o mainwindow.o mainwindow.cpp
+
+/usr/lib/x86_64-linux-gnu/qt4/bin/moc -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++-64 -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I. -I. -I. mainwindow.h -o moc_mainwindow.cpp
+
+g++ -c -m64 -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++-64 -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I. -I. -I. -o moc_mainwindow.o moc_mainwindow.cpp
+
+g++ -m64 -Wl,-O1 -o buttonPush main.o mainwindow.o moc_mainwindow.o    -L/usr/lib/x86_64-linux-gnu -lQtGui -lQtCore -lpthread 
+
+
+QT application - run from command prompt
+$ cd my/dir/hello
+$ qmake -project
+$ qmake
+$ make
+$ ./hello
+
+
+
+Simply run 
+qmake 
+make 
+./buttonPush

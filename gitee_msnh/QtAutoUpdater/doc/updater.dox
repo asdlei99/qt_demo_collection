@@ -1,0 +1,479 @@
+/*!
+@class QtAutoUpdater::Updater
+
+The updater class acts as a user friendly frontend to the UpdaterBackend. It is the primary class
+of this module and can be used to check for updates and install them, if supported. The actual
+feature set of the updater depends on the backend used, but all backends support at least checking
+for updates.
+
+@sa @ref index REAMDE.md, QtAutoUpdater::UpdaterBackend, Updater::features,
+@ref qtautoupdater_backends "Updater Backend Plugins"
+*/
+
+/*!
+@property QtAutoUpdater::Updater::features
+
+@default{`UpdaterBackend::CheckUpdates`}
+
+These features depend on what the backend implementation supports and thus differ based on the update
+mechanism used for your application. The features dictate what can be done with the backend. All
+backends can check for updates, but installing is only supported on some in one way or another.
+
+@accessors{
+	@readAc{features()}
+	@constantAc
+}
+
+@sa UpdaterBackend::Feature, UpdaterBackend::features()
+*/
+
+/*!
+@property QtAutoUpdater::Updater::state
+
+@default{`Updater::State::NoUpdates`}
+
+The state represents what the updater is currently doing. Certain operations are only possible in
+certain states. For example, you can only install updates if the updater is in the NewUpdates state.
+
+@note If you are only interested in whether the updater is doing something or not, use the running
+property instead
+
+@accessors{
+	@readAc{state()}
+	@notifyAc{stateChanged()}
+}
+
+@sa Updater::checkForUpdates, Updater::running
+*/
+
+/*!
+@property QtAutoUpdater::Updater::running
+
+@default{`false`}
+
+Convenience property that simplifies the state property into a boolean property that reports whether
+the updater is doing something or not. States are mapped as follows:
+
+ State		| Running
+------------|---------
+ NoUpdates	| false
+ Checking	| true
+ Canceling	| true
+ NewUpdates	| false
+ Installing	| true
+ Error		| false
+
+Checking for updates and installing is only possible when the updater is not running
+
+@accessors{
+	@readAc{isRunning()}
+	@notifyAc{runningChanged()}
+}
+
+@sa Updater::checkForUpdates, Updater::state
+*/
+
+/*!
+@property QtAutoUpdater::Updater::updateInfo
+
+@default{_&lt;empty list&gt;_}
+
+This property is always empty, unless the state is Updater::State::NewUpdates. In that case, it will
+hold the update information of those available updates. Whenever the updater leaves this state, this
+property will be cleared as well.
+
+@accessors{
+	@readAc{updateInfo()}
+	@notifyAc{updateInfoChanged()}
+}
+
+@sa Updater::state, Updater::running, Updater::checkForUpdates
+*/
+
+/*!
+@property QtAutoUpdater::Updater::runOnExit
+
+@default{`false`}
+
+Specifies if an installer will be launched automatically, as soon as the application exists. This
+property is read only, but will be set when runUpdater() leads to an installer beeing queued to be
+run on exit.
+
+To reset this property use the cancelExitRun() method. If an exit run was scheduled, this will
+disable it. To reenable it, call runUpdater() again
+
+@accessors{
+	@readAc{willRunOnExit()}
+	@resetAc{cancelExitRun()}
+	@notifyAc{runOnExitChanged()}
+}
+
+@sa Updater::runUpdater
+*/
+
+/*!
+@fn QtAutoUpdater::Updater::create(QObject *)
+
+@param parent The object to be set as the parent for the created updater
+@returns A newly created updater instance or `nullptr`, if unable to create one.
+
+This method assumes the configuration for the updater to be create is located at a default location.
+The location is searched as follows:
+
+1. Windows only: Check for a group name "updater" in the applications default registry group
+2. Search all application configuration paths (QStandardPaths::AppConfigLocation) for a file
+named updater.conf
+3. Search all application data paths (QStandardPaths::AppDataLocation) for a file named updater.conf
+
+If none of these work and no config can be found, nullptr is returned. If it is found, it must
+contain the "backend" entry, set to the updater backend to be used. The backend will get initialized
+using the found configuration.
+
+@attention For some update installations, an updater needs to be launched on exit of the running
+application. This only works if the updater lives long enough to catch the
+QCoreApplication::aboutToQuit signal! This means when creating an updater for a backend that may need
+to be run on exit, you should use either `qApp` or `nullptr` as parent for the updater.
+
+@sa Updater::supportedUpdaterBackends, @ref qtautoupdater_backends "Updater Backend Plugins"
+*/
+
+/*!
+@fn QtAutoUpdater::Updater::create(const QString &, QObject *)
+
+@param configPath The path to the configuration file
+@param parent The object to be set as the parent for the created updater
+@returns A newly created updater instance or `nullptr`, if unable to create one.
+
+The backend is loaded based on the given configuration file, which must be in the
+QSettings::IniFormat. It must contain the "backend" entry, set to the updater backend to be used. If
+the file does not exists or backend is invalid, nullptr is returned. Otherwise the created instance,
+initialized using the given configuration.
+
+@attention For some update installations, an updater needs to be launched on exit of the running
+application. This only works if the updater lives long enough to catch the
+QCoreApplication::aboutToQuit signal! This means when creating an updater for a backend that may need
+to be run on exit, you should use either `qApp` or `nullptr` as parent for the updater.
+
+@sa Updater::supportedUpdaterBackends, @ref qtautoupdater_backends "Updater Backend Plugins"
+*/
+
+/*!
+@fn QtAutoUpdater::Updater::create(QSettings*, QObject *)
+
+@param config The configuration object
+@param parent The object to be set as the parent for the created updater
+@returns A newly created updater instance or `nullptr`, if unable to create one.
+
+The backend is loaded based on the given configuration. It must contain the "backend" entry, set to
+the updater backend to be used. If the backend is missing or invalid, nullptr is returned. Otherwise
+the created instance, initialized using the given configuration.
+
+@attention For some update installations, an updater needs to be launched on exit of the running
+application. This only works if the updater lives long enough to catch the
+QCoreApplication::aboutToQuit signal! This means when creating an updater for a backend that may need
+to be run on exit, you should use either `qApp` or `nullptr` as parent for the updater.
+
+@sa Updater::supportedUpdaterBackends, @ref qtautoupdater_backends "Updater Backend Plugins"
+*/
+
+/*!
+@fn QtAutoUpdater::Updater::create(QString, QVariantMap, QObject *)
+
+@param key The key of the backend to be loaded
+@param configuration The configuration to be passed to the backend to configure it
+@param parent The object to be set as the parent for the created updater
+@returns A newly created updater instance or `nullptr`, if unable to create one.
+
+The backend is loaded based on the given key. If no backend was found for the key, nullptr is
+returned. Otherwise the created instance. The configuration is used to initialize the backend.
+
+@attention For some update installations, an updater needs to be launched on exit of the running
+application. This only works if the updater lives long enough to catch the
+QCoreApplication::aboutToQuit signal! This means when creating an updater for a backend that may need
+to be run on exit, you should use either `qApp` or `nullptr` as parent for the updater.
+
+@sa Updater::supportedUpdaterBackends, @ref qtautoupdater_backends "Updater Backend Plugins"
+*/
+
+/*!
+@fn QtAutoUpdater::Updater::create(UpdaterBackend::IConfigReader *, QObject *)
+
+@param configReader The configuration reader object
+@param parent The object to be set as the parent for the created updater
+@returns A newly created updater instance or `nullptr`, if unable to create one.
+
+The backend is loaded based on the given configuration. It must contain the "backend" entry, set to
+the updater backend to be used. If the backend is missing or invalid, nullptr is returned. Otherwise
+the created instance, initialized using the given configuration.
+
+@note Only use this method if you have to provide your own implementation of the IConfigReader.
+Prefer the other overloads.
+
+@attention For some update installations, an updater needs to be launched on exit of the running
+application. This only works if the updater lives long enough to catch the
+QCoreApplication::aboutToQuit signal! This means when creating an updater for a backend that may need
+to be run on exit, you should use either `qApp` or `nullptr` as parent for the updater.
+
+@sa Updater::supportedUpdaterBackends, @ref qtautoupdater_backends "Updater Backend Plugins",
+UpdaterBackend::IConfigReader
+*/
+
+/*!
+@fn QtAutoUpdater::Updater::~Updater
+
+@warning Destroying the updater while it is still running can crash your application! Always make
+shure to abort update checks and wait for them to finish before doing so.
+
+@sa Updater::running, Updater::abortUpdateCheck
+*/
+
+/*!
+@fn QtAutoUpdater::Updater::scheduleUpdate(std::chrono::seconds , bool)
+
+@param delaySeconds The time (in seconds) to wait until the update is started
+@param repeated Specifies, whether the updater should be started every `delaySeconds`
+or only once
+@returns The internal ID of this update task. Can be used to cancel the task
+
+Schedules an update to be run after `delaySeconds` seconds. If `repeated` is `true`, the
+updater will not just be run once, but every `delaySeconds` seconds (indefinitly, until
+this instance is destroyed or the task canceled).
+
+@note After scheduling the update, you will have no way to track of the schedule.
+If the updater is already running while the task is triggered, nothing will happend.
+The scheduled update will only work if this instance of the updater is still alive
+at that time.
+
+@sa Updater::cancelScheduledUpdate, Updater::checkForUpdates
+*/
+
+/*!
+@fn QtAutoUpdater::Updater::scheduleUpdate(const QDateTime &)
+
+@param when The timepoint where the update should be started
+@returns The internal ID of this update task. Can be used to cancel the task
+
+Schedules an update to be run at `when`. If `when` is in the past, nothing will happen and
+0 will be returned. The update will be started once that time is reached (assuming that
+this updater instance is still alive at that timepoint).
+
+@note After scheduling the update, you will have no way to track of the schedule.
+If the updater is already running while the task is triggered, nothing will happend.
+The scheduled update will only work if this instance of the updater is still alive
+at that time.
+
+@sa Updater::cancelScheduledUpdate, Updater::checkForUpdates
+*/
+
+/*!
+@fn QtAutoUpdater::Updater::runUpdater
+
+@param mode The preferred mode to start the updater in
+@param scope The preferred scope to use for the updater
+@returns `true`, if the update installer was started, false if not
+
+This method launches the installer, based on the given mode, scope and the features that the
+backend supports. It will either launch the internal installer ("perform"), by emitting
+showInstaller(), launch a parallel external install process immediately ("trigger") and track it's
+exection, or mark an external installer to be executed as soon as the application quits ("onExit").
+The following table shows which parameters and flags trigger which mode. The flags are evaluated in
+the order seen in the table, so if multiple flags are set, those who are displayed here first are
+the onces that decide what happens
+
+<table>
+	<tr>
+		<th>Mode</th>
+		<th>Scope</th>
+		<th>Flags</th>
+		<th>Result</th>
+	</tr>
+	<tr>
+		<td rowspan="6">`Parallel`</td>
+		<td rowspan="3">`PreferInternal`</td>
+		<td>`PerformInstall`</td>
+		<td>perform</td>
+	</tr>
+	<tr>
+		<td>`ParallelTrigger`</td>
+		<td>trigger</td>
+	</tr>
+	<tr>
+		<td>`TriggerInstall`</td>
+		<td>onExit</td>
+	</tr>
+	<tr>
+		<td rowspan="3">`PreferExternal`</td>
+		<td>`ParallelTrigger`</td>
+		<td>trigger</td>
+	</tr>
+	<tr>
+		<td>`PerformInstall`</td>
+		<td>perform</td>
+	</tr>
+	<tr>
+		<td>`TriggerInstall`</td>
+		<td>onExit</td>
+	</tr>
+	<tr>
+		<td rowspan="6">`Parallel | Force`</td>
+		<td rowspan="3">`PreferInternal`</td>
+		<td>`PerformInstall`</td>
+		<td>perform</td>
+	</tr>
+	<tr>
+		<td>`ParallelTrigger`</td>
+		<td>trigger</td>
+	</tr>
+	<tr>
+		<td>`TriggerInstall`</td>
+		<td>-</td>
+	</tr>
+	<tr>
+		<td rowspan="3">`PreferExternal`</td>
+		<td>`ParallelTrigger`</td>
+		<td>trigger</td>
+	</tr>
+	<tr>
+		<td>`PerformInstall`</td>
+		<td>perform</td>
+	</tr>
+	<tr>
+		<td>`TriggerInstall`</td>
+		<td>-</td>
+	</tr>
+	<tr>
+		<td rowspan="4">`OnExit`</td>
+		<td rowspan="3">`PreferInternal`</td>
+		<td>`TriggerInstall`</td>
+		<td>onExit</td>
+	</tr>
+	<tr>
+		<td>`ParallelTrigger`</td>
+		<td>onExit</td>
+	</tr>
+	<tr>
+		<td>`PerformInstall`</td>
+		<td>perform</td>
+	</tr>
+	<tr>
+		<td>`PreferExternal`</td>
+		<td colspan="2"><i>Same as </i>`PreferInternal`</td>
+	</tr>
+	<tr>
+		<td rowspan="4">`OnExit | Force`</td>
+		<td rowspan="3">`PreferInternal`</td>
+		<td>`TriggerInstall`</td>
+		<td>onExit</td>
+	</tr>
+	<tr>
+		<td>`ParallelTrigger`</td>
+		<td>onExit</td>
+	</tr>
+	<tr>
+		<td>`PerformInstall`</td>
+		<td>-</td>
+	</tr>
+	<tr>
+		<td>`PreferExternal`</td>
+		<td colspan="2"><i>Same as </i>`PreferInternal`</td>
+	</tr>
+</table>
+
+For some force configurations, - is specified. This means no updater can be run and false is returned
+instead. If you want to find out whether an installation as been launched immediatly (Parallel) or
+delayed (OnExit), query the runOnExit property.
+
+@sa Updater::state, Updater::installDone, Updater::showInstaller, Updater::runOnExit
+*/
+
+/*!
+@fn QtAutoUpdater::Updater::checkForUpdates
+
+Checking for updates means that the backend will perform the check in the background. If already in
+the running state, nothing happens instead. The updater now enters the Checking state and performs
+the check. The result will be reported via the checkUpdatesDone() signal (and the state).
+
+@sa Updater::abortUpdateCheck, Updater::checkUpdatesDone, Updater::state, Updater::running,
+Updater::updateInfo
+*/
+
+/*!
+@fn QtAutoUpdater::Updater::abortUpdateCheck
+
+@param killDelay The maximum delay to wait for the process to gracefully finish
+
+Tries to abort the update check. If no update is currently running (Updater::state != Checking),
+nothing will happen.
+
+If `killDelay` is greater than 0, the updater will try to gracefully terminate the check. After this
+is done, the updater will wait at most `killDelay` milliseconds for the process to finish. If it
+doesn't, it will be killed hard. It will be killed hard immediately, if the delay is set to 0. A
+value below 0 indicates, that only the terminate should happen, without a hard kill timeout.
+
+@warning In most cases there will be no side-effects of an abort. However, if the backend has to be
+killed, because of no delay or a timeout, this may cause unwanted effects.
+
+@sa Updater::checkForUpdates, Updater::state, Updater::running
+*/
+
+/*!
+@fn QtAutoUpdater::Updater::cancelScheduledUpdate
+
+@param taskId The id of the task to be canceled
+
+Cancels the task with the id `taskId`. If there was a task with that ID, you can be shure
+that it will be canceled. If the task was not until the point you call this function, it
+will not be triggered anymore.
+
+@sa Updater::scheduleUpdate, Updater::abortUpdateCheck
+*/
+
+/*!
+@fn QtAutoUpdater::Updater::checkUpdatesDone
+
+@param result The result state the updater reached after checking for updates
+
+This signal is emitted if the updater was in the Checking state and has finished that task. It will
+now be in one of the three non-running states NoUpdates, NewUpdates or Error. This is a signal for
+convenience to only catch those specific state changes, instead of all by using the state property.
+
+@sa Updater::checkForUpdates, Updater::state, Updater::updateInfo
+*/
+
+/*!
+@fn QtAutoUpdater::Updater::progressChanged
+
+@param progress A percentage value representing the check progress
+@param status A localized status string to explaing the current state of the check process
+
+This signal provides the current state of the update check process. percent can either range from
+0.0 to 1.0 to present an actual percentage, or be -1.0 to represent an indeterminate progress.
+Status can be empty to be unchanged/unset. Not all update backends support reporting detailes status.
+Check the features property for the UpdaterBackend::Feature::CheckProgress flag to verify this.
+
+@sa Updater::checkForUpdates, Updater::state, Updater::features, UpdaterBackend::Feature
+*/
+
+/*!
+@fn QtAutoUpdater::Updater::showInstaller
+
+@param installer The installer to be shown
+
+This signal is emitted if runUpdater() decides to perform an internal update installation. It will
+create an installer from the backend and pass it back via this signal. The installer should be used
+by some kind of UI to guide the user through the installation process.
+
+@sa Updater::runUpdater, Updater::features, UpdateInstaller
+*/
+
+/*!
+@fn QtAutoUpdater::Updater::installDone
+
+@param success Reports whether the update installer did succeed or not
+
+This signal is emitted if runUpdater() launched a parallel installation (either a performed or a
+triggered installation) and that installation finished. If the installation was successfully
+completed, success will be true, otherwise false.
+
+@sa Updater::runUpdater, Updater::features
+*/

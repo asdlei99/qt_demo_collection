@@ -1,0 +1,8 @@
+prefix=/home/zhen/catkin_ws4/src/qt_ros_demo2/build/devel
+
+Name: qt_ros_demo2
+Description: Description of qt_ros_demo2
+Version: 0.1.0
+Cflags: 
+Libs: -L/home/zhen/catkin_ws4/src/qt_ros_demo2/build/devel/lib 
+Requires: 

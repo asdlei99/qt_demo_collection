@@ -1,0 +1,4 @@
+﻿  tcpserver.cpp
+tcpserver.cpp(61): warning C4100: “socketError”: 未引用的形参
+  qtcpserver_demo.vcxproj -> D:\workspace_qt\qtcpserver_demo\debug\qtcpserver_demo.exe
+  qtcpserver_demo.vcxproj -> debug\qtcpserver_demo.pdb (Full PDB)

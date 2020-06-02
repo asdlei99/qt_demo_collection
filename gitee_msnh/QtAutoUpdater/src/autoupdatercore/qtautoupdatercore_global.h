@@ -1,0 +1,16 @@
+#ifndef QTAUTOUPDATERCORE_GLOBAL_H
+#define QTAUTOUPDATERCORE_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#ifndef QT_STATIC
+#  if defined(QT_BUILD_AUTOUPDATERCORE_LIB)
+#    define Q_AUTOUPDATERCORE_EXPORT Q_DECL_EXPORT
+#  else
+#    define Q_AUTOUPDATERCORE_EXPORT Q_DECL_IMPORT
+#  endif
+#else
+#  define Q_AUTOUPDATERCORE_EXPORT
+#endif
+
+#endif // QTAUTOUPDATERCORE_GLOBAL_H

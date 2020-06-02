@@ -1,0 +1,24 @@
+module de.skycoder42.QtAutoUpdater.Quick
+plugin declarative_autoupdaterquick
+classname QtAutoUpdaterQuickDeclarativeModule
+typeinfo plugins.qmltypes
+depends de.skycoder42.QtAutoUpdater.Core 3.0
+depends QtQuick.Layouts 1.13
+depends QtQuick.Controls 2.13
+
+internal DialogBase DialogBase.qml
+internal ProgressItem ProgressItem.qml
+internal UpdaterComponent UpdaterComponent.qml
+internal UpdateInfoPage UpdateInfoPage.qml
+internal SelectComponentView SelectComponentView.qml
+internal InstallView InstallView.qml
+internal SuccessView SuccessView.qml
+internal UpdateInstallerPage UpdateInstallerPage.qml
+
+ProgressDialog 3.0 ProgressDialog.qml
+AskUpdateDialog 3.0 AskUpdateDialog.qml
+UpdateResultDialog 3.0 UpdateResultDialog.qml
+UpdateInfoComponent 3.0 UpdateInfoComponent.qml
+UpdateInstallerComponent 3.0 UpdateInstallerComponent.qml
+UpdateButton 3.0 UpdateButton.qml
+UpdateAction 3.0 UpdateAction.qml

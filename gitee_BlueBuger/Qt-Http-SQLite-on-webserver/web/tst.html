@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="handlebars使用教学 handlebars案例演示">
+    <title>Handlebars教程</title>
+    <style>
+        .card {
+            font-size: 30px;
+            background-color: #abbccc;
+            margin: 20px;
+            float: left;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="card"></div>
+    <!-- 模板部分 -->
+    <script id="tpl" type="text/x-handlebars-template">
+        {{!-- Handlebars的注释写法 --}}
+        {{!-- 注意：Handlerbars比较难以理解的地方是：在数据渲染时会自动进入数据的下一层 --}}
+        {{!-- 这里的this代表data数组 --}}
+        <div class="list-group">
+            {{#each this}}
+                <button type="button" class="list-group-item db" data-db-name="{{this}}">{{this}}</button>
+            {{/each}}
+        </div>
+		
+    </script>
+    <!-- 引入handlebars -->
+    <script src="https://cdn.bootcss.com/handlebars.js/2.0.0/handlebars.min.js"></script>
+
+    <!-- js部分 -->
+    <script>
+        // 数据
+        var data = [
+                    '《欺骗的艺术》',
+                    '《入侵的艺术》',
+                    '《线上幽灵》'
+                ]
+
+        // 获取模板
+        var tpl = document.getElementById('tpl').innerHTML
+        // Handlebars编译模板，返回一个可执行函数
+        var template = Handlebars.compile(tpl)
+        // 传入数据，得到编译后的html
+        var html = template(data)
+        // 将编译完成的html显示到网页
+        document.getElementById('card').innerHTML = html
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+         
+		 function getQueryString(name) {
+			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+			var r = window.location.search.substr(1).match(reg);
+			if ( r != null ){
+				return unescape(r[2]);
+			}else{
+				return null;
+			} 
+		}
+		localStorage.setItem("width", getQueryString("width"));
+		localStorage.setItem("height", getQueryString("height"));
+    </script>
+</head>
+<body>
+    <p></p>
+</body>
+</html>

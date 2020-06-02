@@ -1,0 +1,3 @@
+module MyPlugin
+plugin MyPlugin
+MyRect 1.0 MyRect.qml

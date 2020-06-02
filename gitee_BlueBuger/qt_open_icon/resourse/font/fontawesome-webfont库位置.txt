@@ -1,0 +1,4 @@
+http://fontawesome.io/cheatsheet/
+
+这是个开源库，github源在：
+https://github.com/FortAwesome/Font-Awesome

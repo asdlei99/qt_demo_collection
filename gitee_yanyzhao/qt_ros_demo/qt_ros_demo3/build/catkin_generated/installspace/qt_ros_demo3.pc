@@ -1,0 +1,8 @@
+prefix=/usr/local
+
+Name: qt_ros_demo3
+Description: Description of qt_ros_demo3
+Version: 0.1.0
+Cflags: 
+Libs: -L/usr/local/lib 
+Requires: 

@@ -1,0 +1,12 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+<file>./icon/open.png</file>
+<file>./icon/rotate-left.png</file>
+<file>./icon/rotate-right.png</file>
+<file>./icon/save-as.png</file>
+<file>./icon/save.png</file>
+<file>./icon/zoom-in.png</file>
+<file>./icon/zoom-out.png</file>
+<file>./icon/quit.svg</file>
+</qresource>
+</RCC>

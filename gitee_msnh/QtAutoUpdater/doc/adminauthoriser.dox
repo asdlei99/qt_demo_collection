@@ -1,0 +1,47 @@
+/*!
+@namespace QtAutoUpdater::AdminAuthoriser
+
+@brief Methods to run applications as authorized user (admin/root)
+
+The AdminAuthoriser's task is to run a program with elevated rigths. Since the way to archive this is
+different on every platform, it will behave differently on different systems. Generelly it will prompt
+the user for admin credentials using the system API and then execute the program on success. This may
+not work on any platform.
+
+This namespace can be used when implementing custom plugins to run elevated tasks
+*/
+
+/*!
+@fn QtAutoUpdater::AdminAuthoriser::needsAdminPermission(const QString &)
+
+@returns `true`, if this program needs to be run as priviledged user, `false` if not or unable to determine
+
+This might return false even if a application needs such permissions in three cases:
+
+1. The system is unable to figure out, whether the program needs that permission
+2. The current application is already running with elevated rights
+3. The check is not supported on the current platform
+
+@sa AdminAuthoriser::executeAsAdmin
+*/
+
+/*!
+@fn QtAutoUpdater::AdminAuthoriser::executeAsAdmin(const QString &, const QStringList &, const QString &)
+
+@param program The path to the executable. This will be an absolute path
+@param arguments A list of arguments to be passed to the executable
+@param workingDir The working directory to execute the program in. Should always be a valid path
+@returns `true`, if the program could be started with **elevated rights**, `false` if not
+
+This function will try to prompt the user for elevation and the execute the given program with
+elevation. Please note that workingDir may be ignored on some platforms. You should not rely on it
+beeing set correctly. Also, it may return `true`, even if the user rejected priviledged execution.
+
+This function can return false if:
+
+1. The user rejected the priviledged execution (but this may result in a successful return as well)
+2. The user accepted, but the operating system was not able to start the process
+3. The execution is not supported on the current platform
+
+@sa AdminAuthoriser::needsAdminPermission
+*/

@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/zhen/catkin_ws4/src/qt_ros_demo2/build/devel/setup.sh

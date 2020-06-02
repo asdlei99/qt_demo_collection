@@ -1,0 +1,101 @@
+/*!
+@class QtAutoUpdater::UpdateButton
+
+The UpdateButton is a ready-made "button" to check for updates. It is connected to an updater and
+thus will automatically start checking for updates. It will also display a progress and optionally
+allow canceling and installation of updates.
+
+The button will represent the updaters state and automatically enable/disable itself to
+avoid start beeing called twice. In addition to that, the whole button widget will be disabled
+if the updater gets deleted while the button is still existant.
+
+@sa QtAutoUpdater::Updater, UpdateController::createUpdateAction,
+@ref qtautoupdater_image_page "Image Page"
+*/
+
+/*!
+@property QtAutoUpdater::UpdateButton::updater
+
+@default{`nullptr`}
+
+The button can only be used if the updater was set, either directly or via the constructor. The
+button attaches to the updater and reacts on changes in it's state to react accordingly.
+
+@accessors{
+	@readAc{updater()}
+	@writeAc{setUpdater()}
+	@notifyAc{updaterChanged()}
+}
+
+@sa UpdateButton::mode
+*/
+
+/*!
+@property QtAutoUpdater::UpdateButton::mode
+
+@default{`UpdateButton::ModeFlag::AllowAndShowAll`}
+
+The mode is used to control the buttons behaviour. See UpdateButton::ModeFlag for details about what
+each mode does. By default, all features are enabled.
+
+@accessors{
+	@readAc{mode()}
+	@writeAc{setMode()}
+	@notifyAc{modeChanged()}
+}
+
+@sa UpdateButton::ModeFlag
+*/
+
+/*!
+@property QtAutoUpdater::UpdateButton::animationFile
+
+@default{`:/QtAutoUpdater/icons/updateRunning.gif`}
+
+The default file will show a simple idle animation. If this does not fit the style of your ui, you
+can use  this property to specify a different animation source.
+
+@accessors{
+	@readAc{animationFile()}
+	@writeAc{setAnimationFile()}
+	@writeAc{setAnimationDevice()}
+	@resetAc{resetAnimationFile()}
+	@notifyAc{animationFileChanged()}
+}
+
+@sa @ref qtautoupdater_image_page "Image Page"
+*/
+
+/*!
+@property QtAutoUpdater::UpdateButton::installMode
+
+@default{`Updater::InstallModeFlag::Parallel`}
+
+The install mode to be passed to Updater::runUpdater, if the ModeFlag::AllowInstall flag is set and
+the user launches an installation via the button.
+
+@accessors{
+	@readAc{installMode()}
+	@writeAc{setInstallMode()}
+	@notifyAc{installModeChanged()}
+}
+
+@sa Updater::runUpdater, Updater::InstallModeFlag, UpdateButton::installScope
+*/
+
+/*!
+@property QtAutoUpdater::UpdateButton::installScope
+
+@default{`Updater::InstallScope::PreferInternal`}
+
+The install scope to be passed to Updater::runUpdater, if the ModeFlag::AllowInstall flag is set and
+the user launches an installation via the button.
+
+@accessors{
+	@readAc{installScope()}
+	@writeAc{setInstallScope()}
+	@notifyAc{installScopeChanged()}
+}
+
+@sa Updater::runUpdater, Updater::InstallScope, UpdateButton::installMode
+*/

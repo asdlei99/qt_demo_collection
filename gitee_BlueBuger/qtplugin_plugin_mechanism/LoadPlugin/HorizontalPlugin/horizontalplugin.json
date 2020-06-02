@@ -1,0 +1,18 @@
+{
+"firstName": "Plugin",
+"version" : "0.0.1",
+"classes" : [
+{
+"name": "class1",
+"version" : "0.0.1",
+"icon" : "class1.png"
+},
+{
+"name": "class2",
+"version" : "0.0.1",
+"icon" : "class2.png"
+}
+],
+"time": [
+]
+}

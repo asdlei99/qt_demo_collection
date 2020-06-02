@@ -1,0 +1,211 @@
+/*!
+@class QtAutoUpdater::UpdateController
+
+The update-controller is a helpful tool if you want to show a simple GUI to the users. It offers an
+automated update process, controlled by the user. All thats left for you to do is starting this
+controller. When creating the controller, it attaches to the updater passed to it. Whenever the
+updater changes it's state, a GUI is automatically shown based on the displayLevel. This means you
+can either start the GUI by directly using the controller, or by doing it via the underlying
+updater.
+
+To start updates, you can do the following:
+
+- Call UpdateController::start somewhere in your code
+- Call Updater::checkForUpdates somewhere in your code
+- Schedule an update using Updater::scheduleUpdate
+- Add the QAction returned by UpdateController::createUpdateAction somewhere in your gui
+- Add the UpdateButton widget somewhere in your gui
+
+## Images
+For a full collection of all immages, please go to the @ref qtautoupdater_image_page "Image Page"
+
+@sa QtAutoUpdater::Updater, QtAutoUpdater::UpdateButton
+*/
+
+/*!
+@property QtAutoUpdater::UpdateController::updater
+
+@default{`nullptr`}
+
+The controller can only be used if the updater was set, either directly or via the constructor.
+The controller attaches to the updater and reacts on changes in it's state to show a GUI. This
+includes the Updater::showInstaller signal to show an installation wizard, if neccessary. Which
+parts of the GUI are shown can be controlled via the displayLevel property.
+
+@accessors{
+	@readAc{updater()}
+	@writeAc{setUpdater()}
+	@notifyAc{updaterChanged()}
+}
+
+@sa UpdateController::displayLevel, UpdateController::start
+*/
+
+/*!
+@property QtAutoUpdater::UpdateController::displayLevel
+
+@default{`UpdateController::DisplayLevel::Info`}
+
+The display level controlls the kind of dialogs shown to the user. Levels are ranked from the lowest
+(`AutomaticLevel = 0`) to the highest (`AskLevel = 5`). Each Level includes all levels with a
+smaller value, i.e. using the `AskLevel` will add the ask dialog to everything shown with
+`ProgressLevel`, but not less.
+
+All GUI-elements except of the ask dialog are shown automatically when changes in the used updater
+happen. However, for this dialog to be shown, you must use start().
+
+@note Changing the displayLevel while an update is running will not close any active dialogs, but
+otherwise be in effect immediatly.
+
+@accessors{
+	@readAc{displayLevel()}
+	@writeAc{setDisplayLevel()}
+	@notifyAc{displayLevelChanged()}
+}
+
+@sa UpdateController::start, UpdateController::DisplayLevel
+*/
+
+/*!
+@property QtAutoUpdater::UpdateController::desktopFileName
+
+@default{_&lt;empty&gt;_}
+
+On linux, to show a progress and update counter on the taskbar, a desktop file is needed. Use this
+property to set the _name_ (not path) of the desktop file, e.g. "myapp.desktop". If your application
+does not run on linux, or you don't care for this feature, you can ignore this property.
+
+@accessors{
+	@readAc{desktopFileName()}
+	@writeAc{setDesktopFileName()}
+	@notifyAc{desktopFileNameChanged()}
+}
+*/
+
+/*!
+@property QtAutoUpdater::UpdateController::installScope
+
+@default{`Updater::InstallScope::PreferInternal`}
+
+Specifies if the controller should prefer to launch a parallel update installation as internal
+or external updater. This property only sets a preference - if a backend only supports one of these
+two, that one will be used, ignoring this property. Only for backends that support both, this
+property has any effect.
+
+@accessors{
+	@readAc{installScope()}
+	@writeAc{setInstallScope()}
+	@notifyAc{installScopeChanged()}
+}
+
+@sa Updater::runUpdater, Updater::InstallScope
+*/
+
+/*!
+@property QtAutoUpdater::UpdateController::detailedUpdateInfo
+
+@default{`false`}
+
+The controller supports two different update info dialogs. The detailed one will show a "big" dialog
+with the information, in a wide format. The simple one is just a messagebox that provides the same
+functionality, but is much smaller and hides the details of the specific UpdateInfos. This property
+is used to switch between the two dialogs. If the DisplayLevel is set to not show an info dialog at
+all, neither of the two will be shown.
+
+For a comparison how each of these dialogs looks on each platform, check the
+@ref qtautoupdater_image_page "Image Page".
+
+@accessors{
+	@readAc{isDetailedUpdateInfo()}
+	@writeAc{setDetailedUpdateInfo()}
+	@notifyAc{detailedUpdateInfoChanged()}
+}
+
+@sa UpdateController::DisplayLevel, UpdateInfo, @ref qtautoupdater_image_page "Image Page"
+*/
+
+/*!
+@fn QtAutoUpdater::UpdateController::UpdateController(QObject *)
+
+@param parent The parent object. Will serve as parent for the controller
+
+The created controller will not be bound to a specific window. Instead, all it's dialogs will be
+top-level windows without a parent and application modal. You can change this by using a QWidget
+as parent via setParent().
+
+@sa UpdateController::parentWindow, QObject::parent, QObject::setParent
+*/
+
+/*!
+@fn QtAutoUpdater::UpdateController::UpdateController(QWidget *)
+
+@param parentWindow The parent window. Will serve as parent for the windows and the controller
+
+The created controller will be bound to the widget. This means all dialogs will be child
+windows of the widgets window. On Mac, dialogs will be shown as "Sheets" of the parent
+window. You can change this by using a non QWidget as parent via setParent().
+
+@sa UpdateController::parentWindow, QObject::parent, QObject::setParent
+*/
+
+/*!
+@fn QtAutoUpdater::UpdateController::UpdateController(Updater *, QObject *)
+
+@param updater The updater to be used by the controller
+@copydetails UpdateController::UpdateController(QObject *)
+*/
+
+/*!
+@fn QtAutoUpdater::UpdateController::UpdateController(Updater *, QWidget *)
+
+@param updater The updater to be used by the controller
+@copydetails UpdateController::UpdateController(QWidget *)
+*/
+
+/*!
+@fn QtAutoUpdater::UpdateController::createUpdateAction
+
+@param updater The updater to create the action for
+@param parent The parent object the action should belong to
+@returns a newly created action associated with the given updater
+
+The action will automatically start the updater using Updater::checkForUpdates. In addition to that,
+the action will be automatically disabled if the updater is already running or deleted.
+
+The action has a text, an icon and a tooltip. On Mac, the action will be placed in the
+Applications menu if added to the Menubar. To show it in other places (for example as dock-menu),
+unset the QAction::menuRole.
+
+@sa QtAutoUpdater::UpdateButton, Updater::checkForUpdates,
+@ref qtautoupdater_image_page "Image Page", QAction::menuRole
+*/
+
+/*!
+@fn QtAutoUpdater::UpdateController::parentWindow
+
+@returns The parent, cast to a widget, or nullptr
+
+If the controllers parent is a QWidget, this method returns it. If there is no parent, or the parent
+is only a QObject, nullptr is returned
+
+@sa QObject::parent, QObject::isWidgetType
+*/
+
+/*!
+@fn QtAutoUpdater::UpdateController::start()
+
+@return `true`, if the controller started, `false` if unable to
+
+start will fail if the updater is already running, or if the user rejects the ask dialog, in case
+the AskLevel was set. Otherwise, it will always succeed and run Updater::checkForUpdates. All further
+dialogs will then be shown automatically, according to the displayLevel.
+
+@sa UpdateController::displayLevel, Updater::running, Updater::checkForUpdates
+*/
+
+/*!
+@fn QtAutoUpdater::UpdateController::start(DisplayLevel)
+
+@param displayLevel The DisplayLevel to be set as displayLevel property before starting
+@copydetails UpdateController::start()
+*/

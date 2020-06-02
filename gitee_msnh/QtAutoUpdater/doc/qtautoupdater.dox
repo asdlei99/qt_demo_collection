@@ -1,0 +1,100 @@
+ /*!
+@namespace QtAutoUpdater
+
+@brief The QtAutoUpdater namespace holds all classes that are related with the updater
+
+This namespace includes both, the core library and the widgets library. Please note that
+the two are seperate libraries, that only share the namespace. The Core-Library is
+independet of the Widgets-Library and won't need a gui. The Widgets-Library requires both,
+a gui and the Core-Library.
+
+## Core-Library:
+- Updater
+- UpdateInfo
+- UpdateInstaller
+- UpdaterPlugin
+- UpdaterBackend
+- ProcessBackend
+- AdminAuthoriser
+
+## Widgets-Libray:
+- UpdateController
+- UpdateButton
+*/
+
+/*!
+@namespace de::skycoder42::QtAutoUpdater::Core
+
+@brief The QML import for the QtAutoUpdater core QML module
+
+<b>Current Version</b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.0
+
+<b>Available Types</b>
+- Since Version 3.0
+	- @ref de::skycoder42::QtAutoUpdater::Core::QtAutoUpdater "QtAutoUpdater" (singleton)
+	- @ref QtAutoUpdater::UpdateInfo "UpdateInfo" (uncreatable)
+	- @ref QtAutoUpdater::UpdaterBackend "UpdaterBackend" (uncreatable)
+	- @ref QtAutoUpdater::UpdateInstaller "UpdateInstaller" (uncreatable)
+	- @ref QtAutoUpdater::Updater "Updater" (uncreatable)
+*/
+
+/*!
+@namespace de::skycoder42::QtAutoUpdater::Quick
+
+@brief The QML import for the QtAutoUpdater quick QML module
+
+<b>Current Version</b><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.0
+
+<b>Available Types</b>
+- Since Version 3.0
+	- UpdateInfoModel
+	- ProgressDialog
+	- AskUpdateDialog
+	- UpdateResultDialog
+	- UpdateInfoComponent
+	- UpdateInstallerComponent
+	- UpdateButton
+*/
+
+/*!
+@page qtautoupdater_image_page Image Page
+
+@brief Shows sample images for the updater for widgets and quick
+
+@tableofcontents
+
+The following tables show the different parts of the GUI for both the widgets
+and the quick GUI. In both cases, the platform neutral styles have been chosen,
+i.e. Fusion for widgets and Default for Quick. However, all GUIs are designed
+in a way to adjust to any style. They will work with the windows, gtk and macOs
+widgets styles and with the Material, Universal and Imagine quick styles, as
+well as any other style.
+
+If you want to find out how the GUIs look for your specific platform and style,
+try out the examples, as all of these images have been created with the examples.
+
+@section qtautoupdater_images_main Main Updater GUI
+ Element							| Widgets										| Quick
+------------------------------------|-----------------------------------------------|-------
+ Ask Dialog							| @image html widgets_dialog_ask.png			| @image html quick_dialog_ask.png
+ Progress Dialog					| @image html widgets_dialog_progress.png		| @image html quick_dialog_progress.png
+ No Updates Dialog					| @image html widgets_dialog_none.png			| @image html quick_dialog_none.png
+ Detailed Update Information Dialog	| @image html widgets_dialog_info.png			| @image html quick_dialog_info.png
+ Simple Update Information Dialog	| @image html widgets_dialog_info_simple.png	| @image html quick_dialog_info_simple.png
+
+@section qtautoupdater_images_installer Embedded installer GUI
+ Element					| Widgets										| Quick
+----------------------------|-----------------------------------------------|-------
+ Component selection page	| @image html widgets_install_components.png	| @image html quick_install_components.png
+ Installation progress page	| @image html widgets_install_progress.png		| @image html quick_install_progress.png
+
+@section qtautoupdater_images_button_action UpdateButton and UpdateAction GUI
+ Element					| Widgets									| Quick
+----------------------------|-------------------------------------------|-------
+ Default Button state		| @image html widgets_button_default.png	| @image html quick_button_default.png
+ Checking Button state		| @image html widgets_button_checking.png	| @image html quick_button_checking.png
+ New Updates Button state	| @image html widgets_button_updates.png	| @image html quick_button_updates.png
+ Update action				| @image html widgets_action.png			| @image html quick_action.png
+*/

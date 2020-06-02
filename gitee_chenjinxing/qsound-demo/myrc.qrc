@@ -1,0 +1,34 @@
+<RCC>
+    <qresource prefix="/">
+        <file>src/addRoom.png</file>
+        <file>src/alarm.PNG</file>
+        <file>src/back.png</file>
+        <file>src/background.jpg</file>
+        <file>src/bgm.wav</file>
+        <file>src/card.png</file>
+        <file>src/framer.png</file>
+        <file>src/jj_figure_default.png</file>
+        <file>src/lord.png</file>
+        <file>src/lord_btn_callscore_1_n.png</file>
+        <file>src/lord_btn_callscore_2_n.png</file>
+        <file>src/lord_btn_callscore_3_n.png</file>
+        <file>src/lord_btn_product_n.png</file>
+        <file>src/lord_btn_prompt_n.png</file>
+        <file>src/lord_game_setting_text_bgsound.png</file>
+        <file>src/lordGame.ico</file>
+        <file>src/LoseGame.wav</file>
+        <file>src/mymatch_return_btn_n.png</file>
+        <file>src/new_msg_list_icon.png</file>
+        <file>src/no_call_btn.png</file>
+        <file>src/pass.png</file>
+        <file>src/pass.wav</file>
+        <file>src/Rob1.wav</file>
+        <file>src/Rob2.wav</file>
+        <file>src/Rob3.wav</file>
+        <file>src/RobLord.wav</file>
+        <file>src/rooms.jpg</file>
+        <file>src/sdlord_play_bg_1.png</file>
+        <file>src/task_state_completed.png</file>
+        <file>src/WinGame.wav</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,24 @@
+﻿#include <QtCore>
+#include "struct_def.h"
+
+POD FooList(QList<QString> bar);
+POD FooMap(QMap<int, QString> bar);
+POD FooByteArray(const QByteArray& datagram);
+//POD FooStruct(test_struct bar);
+//POD FooVoidPointer(void* bar);
+
+class TransferNews
+{
+    PROP(QString lastMessage = "");
+
+    SIGNAL(serverTime(QString));
+    SIGNAL(testList(FooList foo));
+    SIGNAL(testMap(FooMap foo));
+    SIGNAL(testFooByteArray(FooByteArray foo));
+    //SIGNAL(testStruct(FooStruct foo));
+    SIGNAL(testStruct(test_struct foo));
+    //SIGNAL(testVoidPointer(FooVoidPointer foo));
+
+    SLOT(void reveiceMessage(QString));
+};
+
