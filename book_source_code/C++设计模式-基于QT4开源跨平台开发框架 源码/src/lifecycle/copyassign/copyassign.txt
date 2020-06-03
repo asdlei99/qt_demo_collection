@@ -1,0 +1,6 @@
+after declarations
+ [ assigns: 0 copies: 2 ctors: 2 ] 
+before    multiply
+ [ assigns: 1 copies: 2 ctors: 2 ] 
+after     multiply
+ [ assigns: 2 copies: 3 ctors: 3 ] 

@@ -1,0 +1,9 @@
+<object class="Customer" name = "unnamed">
+  <QString  Id = "834"/>
+  <QString  Name = "Alan"/>
+  <QString  Address = "Ottawa"/>
+  <QString  Phone = "123-456"/>
+  <QDate  DateEstablished = "2003-07-17"/>
+  <double  Salary = "3.14159"/>
+</object>
+

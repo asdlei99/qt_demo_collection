@@ -1,0 +1,25 @@
+$> ./testphone
+Enter a phone Number (or q to quit): 1112223333
+validated: (US/Canada) +1 111-222-3333
+Enter a phone Number (or q to quit): 20618676017
+validated: (Europe) +20 (0)61-86-76-017
+Enter a phone Number (or q to quit): 31206472582
+validated: (Europe) +31 (0)20-64-72-582
+Enter a phone Number (or q to quit): 16175551212
+validated: (US/Canada) +1 617-555-1212
+Enter a phone Number (or q to quit): +31 20 64 28 258
+validated: (Europe) +31 (0)20-64-28-258
+Enter a phone Number (or q to quit): 1 (617) 222 3333
+validated: (US/Canada) +1 617-222-3333
+Enter a phone Number (or q to quit): 31 20 111 1111
+validated: (Europe) +31 (0)20-11-11-111
+Enter a phone Number (or q to quit): asdf
+Unknown format
+Enter a phone Number (or q to quit): 111 2222 333
+Unknown format
+Enter a phone Number (or q to quit): 111223
+Unknown format
+Enter a phone Number (or q to quit): 1112222333
+validated: (US/Canada) +1 111-222-2333
+Enter a phone Number (or q to quit): q
+$ >
